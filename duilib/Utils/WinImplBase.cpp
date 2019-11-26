@@ -78,7 +78,7 @@ LRESULT WindowImplBase::OnWindowPosChanging(UINT uMsg, WPARAM wParam, LPARAM lPa
 	if (IsZoomed(m_hWnd))
 	{
 		LPWINDOWPOS lpPos = (LPWINDOWPOS)lParam;
-		if (lpPos->flags & SWP_FRAMECHANGED) // µÚÒ»´Î×î´ó»¯£¬¶ø²»ÊÇ×î´ó»¯Ö®ºóËù´¥·¢µÄWINDOWPOSCHANGE
+		if (lpPos->flags & SWP_FRAMECHANGED) // ç¬¬ä¸€æ¬¡æœ€å¤§åŒ–ï¼Œè€Œä¸æ˜¯æœ€å¤§åŒ–ä¹‹åæ‰€è§¦å‘çš„WINDOWPOSCHANGE
 		{
 			POINT pt = { 0, 0 };
 			HMONITOR hMontorPrimary = MonitorFromPoint(pt, MONITOR_DEFAULTTOPRIMARY);
@@ -86,7 +86,7 @@ LRESULT WindowImplBase::OnWindowPosChanging(UINT uMsg, WPARAM wParam, LPARAM lPa
 
 			if (hMonitorTo != hMontorPrimary)
 			{
-				// ½â¾öÎŞ±ß¿ò´°¿ÚÔÚË«ÆÁÏÂÃæ£¨¸±ÆÁ·Ö±æÂÊ´óÓÚÖ÷ÆÁ£©Ê±£¬×î´ó»¯²»ÕıÈ·µÄÎÊÌâ
+				// è§£å†³æ— è¾¹æ¡†çª—å£åœ¨åŒå±ä¸‹é¢ï¼ˆå‰¯å±åˆ†è¾¨ç‡å¤§äºä¸»å±ï¼‰æ—¶ï¼Œæœ€å¤§åŒ–ä¸æ­£ç¡®çš„é—®é¢˜
 				MONITORINFO  miTo = { sizeof(miTo), 0 };
 				GetMonitorInfo(hMonitorTo, &miTo);
 
@@ -191,7 +191,7 @@ LRESULT WindowImplBase::OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam,
 		lpMMI->ptMaxSize.y = rcMaximize.GetHeight();
 	} 
 	else {
-		// ¼ÆËã×î´ó»¯Ê±£¬ÕıÈ·µÄÔ­µã×ø±ê
+		// è®¡ç®—æœ€å¤§åŒ–æ—¶ï¼Œæ­£ç¡®çš„åŸç‚¹åæ ‡
 		lpMMI->ptMaxPosition.x	= rcWork.left;
 		lpMMI->ptMaxPosition.y	= rcWork.top;
 		lpMMI->ptMaxSize.x = rcWork.GetWidth();
@@ -231,13 +231,13 @@ LRESULT WindowImplBase::OnDpiChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
 {
 	bHandled = FALSE;
 
-	// ÖØÖÃÈ«¾Ö DPI Éè¶¨
+	// é‡ç½®å…¨å±€ DPI è®¾å®š
 	DpiManager::GetInstance()->SetScale(LOWORD(wParam));
 
-	// ÖØÖÃÒõÓ°·¶Î§
+	// é‡ç½®é˜´å½±èŒƒå›´
 	m_shadow.ResetShadowBox();
 
-	// TODO ¶Ô´°¿Ú´óĞ¡½øĞĞ½øĞĞ¸Ä±ä£¬ÈÃËùÓĞ¿Ø¼şÖØĞÂ¸ù¾İ DPI ¼ÆËã´óĞ¡
+	// TODO å¯¹çª—å£å¤§å°è¿›è¡Œè¿›è¡Œæ”¹å˜ï¼Œè®©æ‰€æœ‰æ§ä»¶é‡æ–°æ ¹æ® DPI è®¡ç®—å¤§å°
 
 	return 0;
 }
@@ -296,7 +296,7 @@ LRESULT WindowImplBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 	auto callback = nbase::Bind(&WindowImplBase::CreateControl, this, std::placeholders::_1);
 	auto pRoot = (Box*)builder.Create(strSkinFile.c_str(), callback, this);
 
-	ASSERT(pRoot && L"Faield to load xml file.");
+	ASSERT(pRoot && L"Failed to load xml file.");
 	if (pRoot == NULL) {
 		TCHAR szErrMsg[MAX_PATH] = { 0 };
 		_stprintf_s(szErrMsg, L"Failed to load xml file %s", strSkinFile.c_str());
